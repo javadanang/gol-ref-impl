@@ -1,0 +1,32 @@
+{
+  "name": "gol-ref-impl",
+  "version": "0.1.0",
+  "description": "Conway's Game of life reference implementation in Nodejs/SocketIO/Canvas",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pnhung177/gol-ref-impl"
+  },
+  "keywords": [
+    "Game-of-life"
+  ],
+  "author": "pnhung177",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pnhung177/gol-ref-impl/issues"
+  },
+  "homepage": "https://github.com/pnhung177/gol-ref-impl",
+  "dependencies": {
+    "express": "^4.13.1",
+    "lodash": "^3.10.0",
+    "socket.io": "^1.3.6"
+  },
+  "devDependencies": {
+    "chai": "^3.0.0",
+    "mocha": "^2.2.5",
+    "sinon": "^1.15.4"
+  }
+}
