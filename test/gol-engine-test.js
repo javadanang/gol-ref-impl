@@ -35,4 +35,35 @@ describe('Test GOL constructor & methods', function() {
       }
     }
   });
+
+  it('Test Constructor with a list of cells as the parameter', function() {
+    var cells = [
+      {x:0, y:0, v:1},
+      {x:1, y:1, v:1},
+      {x:2, y:2, v:1},
+      {x:3, y:3, v:1},
+      {x:4, y:4, v:1},
+    ];
+
+    var matrix = [
+      [1, 0, 0, 0, 0, 0, 0],
+      [0, 1, 0, 0, 0, 0, 0],
+      [0, 0, 1, 0, 0, 0, 0],
+      [0, 0, 0, 1, 0, 0, 0],
+      [0, 0, 0, 0, 1, 0, 0],
+    ];
+
+    var dim = golUtil.getMatrixDimension(matrix);
+    var gol = new GOL({ cols:dim.cols, rows:dim.rows, cells:cells });
+
+    assert(gol.getCols() === dim.cols, 'Return value of gol.getCols() is incorrect');
+    assert(gol.getRows() === dim.rows, 'Return value of gol.getRows() is incorrect');
+
+    for(var i=0; i<dim.rows; i++) {
+      for(var j=0; j<dim.cols; j++) {
+        assert(matrix[i][j] == gol.getCell(j, i),
+          'cell[' + i + ',' + j + '] value is incorrect');
+      }
+    }
+  });
 });
