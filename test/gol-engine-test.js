@@ -1,5 +1,6 @@
 var assert = require('chai').assert;
 var GOL = require('../lib/gol-engine.js');
+var golUtil = require('../lib/gol-util.js');
 
 describe('Test GOL constructor & methods', function() {
   it('Test Constructor, getCols() & getRows()', function() {
@@ -22,14 +23,13 @@ describe('Test GOL constructor & methods', function() {
 
     var gol = new GOL({ matrix: mat });
 
-    var cols = mat[0].length;
-    var rows = mat.length;
+    var dim = golUtil.getMatrixDimension(mat);
 
-    assert(cols === gol.getCols(), 'Return value of gol.getCols() is not correct');
-    assert(rows === gol.getRows(), 'Return value of gol.getRows() is not correct');
+    assert(dim.cols === gol.getCols(), 'Return value of gol.getCols() is not correct');
+    assert(dim.rows === gol.getRows(), 'Return value of gol.getRows() is not correct');
 
-    for(var i=0; i<rows; i++) {
-      for(var j=0; j<cols; j++) {
+    for(var i=0; i<dim.rows; i++) {
+      for(var j=0; j<dim.cols; j++) {
         assert(mat[i][j] == gol.getCell(j, i),
           'cell[' + i + ',' + j + '] value is not correct');
       }
