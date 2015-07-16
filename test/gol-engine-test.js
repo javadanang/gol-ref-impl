@@ -10,4 +10,18 @@ describe('Test GOL constructor & methods', function() {
       assert(dim[1] === gol.getRows(), 'Return value of gol.getRows() is not correct');
     });
   });
+
+  it('Test Constructor with a matrix as the parameter', function() {
+    var mat = [
+      [0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 1, 0],
+      [0, 0, 1, 0, 0, 1, 0],
+      [0, 0, 0, 1, 1, 1, 0],
+      [0, 0, 0, 0, 0, 0, 0],
+    ];
+
+    var gol = new GOL({ matrix: mat });
+    assert(mat[0].length === gol.getCols(), 'Return value of gol.getCols() is not correct');
+    assert(mat.length === gol.getRows(), 'Return value of gol.getRows() is not correct');    
+  });
 });
