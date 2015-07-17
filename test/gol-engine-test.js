@@ -79,11 +79,12 @@ describe('Test GOL passes through patterns', function() {
       var rows = gol.getRows();
       var cols = gol.getCols();
 
-      assert(gol.getTotalSteps() === 0, 'Total number of steps must be zero.')
+      assert(gol.getTotalSteps() === 0, 'Total number of steps must be zero.');
 
-      gol.next();
-
-      assert(gol.getTotalSteps() === 1, 'Total number of steps must be 1.')
+      for(var k=1; k<4; k++) {
+        gol.next();
+        assert(gol.getTotalSteps() === k, 'Total number of steps must be ' + k);
+      }
 
       for(var i=0; i<rows; i++) {
         for(var j=0; j<cols; j++) {
