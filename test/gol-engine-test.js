@@ -67,6 +67,17 @@ describe('Test GOL constructor & methods', function() {
       }
     }
   });
+
+  it('Test getTotalSteps() method', function() {
+    var matrix = golPatterns['Beacon'].matrix;
+    var gol = new GOL({matrix: matrix[0]});
+    assert(gol.getTotalSteps() == 0, 'Begin round should be step 0');
+    for(var i=1; i<=100; i++) {
+      gol.next();
+      assert(gol.getTotalSteps() == i, 
+        'TotalSteps at round#' + i + ' isnt correct');
+    }
+  });
 });
 
 describe('Test GOL passes through patterns', function() {
