@@ -94,4 +94,32 @@ describe('Test GOL passes through patterns', function() {
       }  
     })
   });
+
+  it('Test with Oscillators patterns', function() {
+    ['Blinker', 'Toad', 'Beacon'].forEach(function(name, index) {
+      var matrix = golPatterns[name].matrix;
+      
+      var gol = new GOL({matrix: matrix[0]});
+      var rows = gol.getRows();
+      var cols = gol.getCols();
+      
+      for(var k=1; k<golPatterns[name].period; k++) {
+        gol.next();
+        for(var i=0; i<rows; i++) {
+          for(var j=0; j<cols; j++) {
+            assert(matrix[k][i][j] == gol.getCell(j, i), 
+              'cell[' + i + ',' + j + '] is wrong');
+          }
+        }  
+      }
+
+      gol.next();
+      for(var i=0; i<rows; i++) {
+        for(var j=0; j<cols; j++) {
+          assert(matrix[0][i][j] == gol.getCell(j, i), 
+            'cell[' + i + ',' + j + '] is wrong');
+        }
+      }
+    });
+  });
 });
