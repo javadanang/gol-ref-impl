@@ -1,6 +1,7 @@
 var assert = require('chai').assert;
 var GOL = require('../lib/gol-engine.js');
 var golUtil = require('../lib/gol-util.js');
+var golPatterns = require('../lib/gol-patterns.js');
 
 describe('Test GOL constructor & methods', function() {
   it('Test Constructor, getCols() & getRows()', function() {
@@ -65,5 +66,31 @@ describe('Test GOL constructor & methods', function() {
           'cell[' + i + ',' + j + '] value is incorrect');
       }
     }
+  });
+});
+
+describe('Test GOL passes through patterns', function() {
+  
+  it('Test with Still-lifes patterns', function() {
+    ['Block', 'Beehive', 'Loaf', 'Boat'].forEach(function(name, index) {
+      var matrix = golPatterns[name].matrix;
+      
+      var gol = new GOL({matrix: matrix[0]});
+      var rows = gol.getRows();
+      var cols = gol.getCols();
+
+      assert(gol.getTotalSteps() === 0, 'Total number of steps must be zero.')
+
+      gol.next();
+
+      assert(gol.getTotalSteps() === 1, 'Total number of steps must be 1.')
+
+      for(var i=0; i<rows; i++) {
+        for(var j=0; j<cols; j++) {
+          assert(matrix[0][i][j] == gol.getCell(j, i), 
+            'cell[' + i + ',' + j + '] is incorrect');
+        }
+      }  
+    })
   });
 });
