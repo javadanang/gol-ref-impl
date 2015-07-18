@@ -1,0 +1,11 @@
+
+#wrapper {
+  width: 964px;
+  margin: auto;
+  border-left: lightgray solid 1px;
+  border-right: lightgray solid 1px;
+}
+
+#control{
+  margin: auto;
+}

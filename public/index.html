@@ -5,6 +5,7 @@
     <title>Conway's Game of Life - Nodejs/Socket.io/Canvas</title>
     <link rel="stylesheet" href="/assets/css/bootstrap.css"/>
     <link rel="stylesheet" href="/assets/css/gol-client.css"/>
+    <script src="/socket.io/socket.io.js"></script>
     <script src="/assets/js/jquery.min.js"></script>
     <script src="/assets/js/bootstrap.min.js"></script>
     <script src="/assets/js/gol-client.js"></script>
@@ -13,6 +14,26 @@
     <div id="wrapper" class="container">
 
       <h1 id="title">Conway's Game of Life</h1>
+
+      <div id="control" class="row">
+        <div class="col-md-4">
+          <div class="panel panel-info">
+            <div class="panel-body">
+              <button id='start' class="btn btn-primary">Start</button>
+              <button id='stop' class="btn btn-primary">Stop</button>
+              <button id='step' class="btn btn-primary">Step</button>
+              <button id='reset' class="btn btn-primary">Reset</button>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-8">
+          <div class="panel panel-info">
+            <div class="panel-body">
+              <h5>Steps: <span id="totalsteps" class="label label-default">0</span> &nbsp; Alive cells: <span id="alivecells" class="label label-default">0</span> &nbsp; Elapsed time: <span id="time_usage" class="label label-default">0</span>ms &nbsp; Memory usage: <span id="memory_usage" class="label label-default">0</span>Kb</h5>
+            </div>
+          </div>
+        </div>
+      </div>
 
       <div id="footer">
         Conway's Game of Life - Nodejs/Socket.io/Canvas implementation by pnhung177@acegik.net - 2015
