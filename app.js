@@ -31,6 +31,8 @@ gol.on('change', function(changes, perf) {
 
 var golState = 0;
 
+var serverIPs = golUtil.getServerIps();
+
 io.on('connection', function (socket) {
 
   socket.on('request dimension', function(data) {
@@ -51,42 +53,50 @@ io.on('connection', function (socket) {
     });
   });
 
-  socket.on('request reverse', function(data) {
-    data = data || {};
-    console.log('Client request reverse() with params: ' + JSON.stringify(data));
-    gol.reverse(data.cells);
-  });
+  var socketId = socket.id;
+  var clientIp = socket.request.connection.remoteAddress;
+  
+  // Only Webclient open on localhost can control the GOL.
+  // Others (from other computer on the LAN) only see the space 
+  // (i.e. they cannot start/stop/step or change cells by click on it).
+  if (serverIPs.indexOf(clientIp) >= 0) {
 
-  socket.on('start', function() {
-    console.log('User click on start button.');
-    if (golState === 0) {
-      golState = 1;
-      io.sockets.emit('change state', {state: 1});
-      var golRunId = setInterval(function() {
-        gol.next();
-        if (golState === 2) {
-          golState = 0;
-          clearInterval(golRunId);
-        }
-      }, 50);
-    }
-  });
+    socket.on('request reverse', function(data) {
+      data = data || {};
+      console.log('Client request reverse() with params: ' + JSON.stringify(data));
+      gol.reverse(data.cells);
+    });
 
-  socket.on('stop', function() {
-    console.log('User click on stop button.');
-    if (golState === 1) {
-      golState = 2;
-      io.sockets.emit('change state', {state: 0});
-    }
-  });
+    socket.on('start', function() {
+      console.log('User click on start button.');
+      if (golState === 0) {
+        golState = 1;
+        io.sockets.emit('change state', {state: 1});
+        var golRunId = setInterval(function() {
+          gol.next();
+          if (golState === 2) {
+            golState = 0;
+            clearInterval(golRunId);
+          }
+        }, 50);
+      }
+    });
 
-  socket.on('step', function() {
-    console.log('User click on step button.');
-    if (golState === 0) gol.next();
-  });
+    socket.on('stop', function() {
+      console.log('User click on stop button.');
+      if (golState === 1) {
+        golState = 2;
+        io.sockets.emit('change state', {state: 0});
+      }
+    });
 
-  socket.on('reset', function() {
-    console.log('User click on reset button.');
-  });  
+    socket.on('step', function() {
+      console.log('User click on step button.');
+      if (golState === 0) gol.next();
+    });
 
+    socket.on('reset', function() {
+      console.log('User click on reset button.');
+    });
+  }
 });
