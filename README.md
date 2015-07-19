@@ -17,11 +17,11 @@ Run unit testing:
 
     $ ./node_modules/.bin/mocha test/*
 
-Run command line program:
+Run GOL by using command-line:
 
     $ node cli.js
 
-Run web application for Express & Socket.io Server:
+or web application:
 
     $ node app.js
 

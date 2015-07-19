@@ -114,7 +114,25 @@ describe('Test GOL constructor & methods', function() {
       }
     }
 
-    assert(gol.getAliveCells() == alive, 'Number of alive cell is incorrect');
+    assert(gol.getAliveCells() == alive, 'Number of alive cells is incorrect');
+  });
+
+  it('Test reset() method', function() {
+    ['Blinker', 'Toad', 'Beacon'].forEach(function(name, index) {
+      var matrix = golPatterns[name].matrix;
+      
+      var gol = new GOL({matrix: matrix[0]});
+      var rows = gol.getRows();
+      var cols = gol.getCols();
+      
+      gol.reset();
+      assert(gol.getAliveCells() == 0, 'Number of alive cells is incorrect');
+      for(var i=0; i<rows; i++) {
+        for(var j=0; j<cols; j++) {
+          assert(gol.getCell(j, i) == 0, 'cell[' + i + ',' + j + '] must be 0');
+        }
+      }
+    });
   });
 });
 

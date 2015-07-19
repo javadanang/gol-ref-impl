@@ -97,6 +97,7 @@ io.on('connection', function (socket) {
 
     socket.on('reset', function() {
       console.log('User click on reset button.');
+      if (golState === 0) gol.reset();
     });
   }
 });
