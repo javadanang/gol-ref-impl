@@ -16,33 +16,39 @@ var server = app.listen(SERVER_PORT, function () {
 var io = require('socket.io')(server);
 
 var GOL = require('./lib/gol-engine.js');
-var gol = new GOL({ cols: 40, rows: 25, 
+var gol = new GOL({ cols: 150, rows: 90, 
   cells: golPatterns['Gosper-glider-gun'].cells
 });
 
-var display = function() {
-  var cols = gol.getCols();
-  var rows = gol.getRows();
-  for(var i=0; i<rows; i++) {
-    for(var j=0; j<cols; j++) {
-      process.stdout.write(gol.getCell(j,i) ? ' x' : ' .');
-    }
-    process.stdout.write('\n');
-  }
-}
-
 gol.on('change', function(changes, perf) {
-  console.log('Step #' + gol.getTotalSteps() + ' / Alive cells: ' + gol.getAliveCells());
-  console.log('Time/Memory usage: ' + JSON.stringify(perf));
-  display();
+  io.sockets.emit('change space', {
+    totalsteps: gol.getTotalSteps(),
+    alivecells: gol.getAliveCells(),
+    cells: changes,
+    perf: perf
+  });
 });
 
 var golState = 0;
 
 io.on('connection', function (socket) {
 
+  socket.on('request dimension', function(data) {
+    console.log('GolClient request dimension of space.');
+    socket.emit('response dimension', {
+      cols: gol.getCols(),
+      rows: gol.getRows()
+    });
+  });
+
   socket.on('request init', function(data) {
+    console.log('GolClient request init state and space');
     socket.emit('change state', {state: (golState === 0) ? 0 : 1});
+    socket.emit('change space', {
+      totalsteps: gol.getTotalSteps(),
+      alivecells: gol.getAliveCells(),
+      cells: gol.getCells()
+    });
   });
 
   socket.on('start', function() {

@@ -6,6 +6,10 @@
   border-right: lightgray solid 1px;
 }
 
-#control{
+#space, #control, #patterns {
   margin: auto;
+}
+
+#space {
+  margin-bottom: 10px;
 }
