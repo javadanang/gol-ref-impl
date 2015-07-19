@@ -34,6 +34,10 @@
   GolClient.prototype.init = function(params) {
     var self = this;
 
+    self.selected_cell;
+    self.selected_cells = [];
+    self.collection_mode = false;
+
     params = params || {};
 
     console.log('golClient.init() ...');
@@ -43,6 +47,29 @@
 
     this.width = this.canvas.getAttribute('width');
     this.height = this.canvas.getAttribute('height');
+
+    this.registerEvent(this.canvas, 'mousedown', function(event) {
+      self.collection_mode = true;
+      self.selected_cell = self.positionOfMouseOnCanvas(event);
+      self.selected_cells.push(self.selected_cell);
+    });
+
+    this.registerEvent(this.canvas, 'mouseup', function(event) {
+      self.socket.emit('request reverse', {cells: self.selected_cells});
+      self.selected_cell = undefined;
+      self.selected_cells = [];
+      self.collection_mode = false;
+    });
+
+    this.registerEvent(this.canvas, 'mousemove', function(event) {
+      if (!self.collection_mode) return;
+
+      var pos = self.positionOfMouseOnCanvas(event);
+      if (pos.x != self.selected_cell.x || pos.y != self.selected_cell.y) {
+        self.selected_cell = pos;
+        self.selected_cells.push(pos);
+      }
+    });
 
     self.socket.on('response dimension', function(data) {
       self.cols = data.cols;
@@ -119,6 +146,30 @@
       this.cell_border + (this.cell_border + this.cell_size) * i, 
       this.cell_border + (this.cell_border + this.cell_size) * j, 
       this.cell_size, this.cell_size);
+  }
+
+  GolClient.prototype.positionOfMouseOnCanvas = function(event) {
+    event = event || window.event;
+
+    // Get the horizontal & vertical coordinates of the mouse
+    var mouseX = event.pageX;
+    var mouseY = event.pageY;
+
+    // Get the horizontal & vertical coordinates of the canvas
+    var canvasX = 0;
+    var canvasY = 0;
+    var domObj = event.target ||  event.srcElement;
+    while(domObj.offsetParent) {
+      canvasX += domObj.offsetLeft;
+      canvasY += domObj.offsetTop;
+      domObj = domObj.offsetParent;
+    }
+
+    var cell_size = this.cell_size + 1;
+    var x = Math.ceil(((mouseX - canvasX)/cell_size) - 1);
+    var y = Math.ceil(((mouseY - canvasY)/cell_size) - 1);
+
+    return {x: x, y: y};
   }
 
   GolClient.prototype.registerEvent = function (ele, event, handler, capture) {

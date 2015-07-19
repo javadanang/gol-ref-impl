@@ -51,6 +51,12 @@ io.on('connection', function (socket) {
     });
   });
 
+  socket.on('request reverse', function(data) {
+    data = data || {};
+    console.log('Client request reverse() with params: ' + JSON.stringify(data));
+    gol.reverse(data.cells);
+  });
+
   socket.on('start', function() {
     console.log('User click on start button.');
     if (golState === 0) {
