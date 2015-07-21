@@ -105,5 +105,10 @@ io.on('connection', function (socket) {
       console.log('User click on reset button.');
       if (golState === 0) gol.reset();
     });
+
+    socket.on('random', function() {
+      console.log('User click on random button.');
+      if (golState === 0) gol.random();
+    });
   }
 });

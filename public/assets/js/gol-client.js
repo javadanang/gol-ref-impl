@@ -11,9 +11,8 @@
     self.socket = io.connect(getBaseURL());
 
     self.socket.on('change space', function(data) {
-      console.log('Server request change:' + JSON.stringify(data));
+      var cells = data.cells || [];
       
-      var cells = data.cells;
       for(var k=0; k<cells.length; k++) {
         self.drawCell(cells[k].x, cells[k].y, cells[k].v == 1);
       }
@@ -39,8 +38,6 @@
     self.collection_mode = false;
 
     params = params || {};
-
-    console.log('golClient.init() ...');
 
     this.canvas = document.getElementById('canvas');
     this.context = this.canvas.getContext('2d');
@@ -90,6 +87,7 @@
     this.button_stop = document.getElementById('stop');
     this.button_step = document.getElementById('step');
     this.button_reset = document.getElementById('reset');
+    this.button_random = document.getElementById('random');
 
     this.status_totalsteps = document.getElementById('totalsteps');
     this.status_alivecells = document.getElementById('alivecells');
@@ -114,7 +112,11 @@
       self.socket.emit('reset');
     });
 
-    self.registerEvent(self.pattern_list, 'change', function(event) {
+    this.registerEvent(this.button_random, 'click', function() {
+      self.socket.emit('random');
+    });
+
+    self.registerEvent(self.pattern_list, 'change', function() {
       self.socket.emit('request pattern', {name: self.pattern_list.value});
     });
     
@@ -124,17 +126,17 @@
         self.button_stop.disabled = true;
         self.button_step.disabled = false;
         self.button_reset.disabled = false;
+        self.button_random.disabled = false;
         self.pattern_list.disabled = false;
       } else {
         self.button_start.disabled = true;
         self.button_stop.disabled = false;
         self.button_step.disabled = true;
         self.button_reset.disabled = true;
+        self.button_random.disabled = true;
         self.pattern_list.disabled = true;
       }
     });
-
-    console.log('golClient.init() done.');
   }
 
   GolClient.prototype.drawSpace = function() {
