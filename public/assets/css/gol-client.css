@@ -6,10 +6,22 @@
   border-right: lightgray solid 1px;
 }
 
+#wrapper h1,
+#wrapper h4 {
+  text-align: center;
+  margin-bottom: 15px;
+}
+
 #space, #control, #patterns {
   margin: auto;
 }
 
 #space {
   margin-bottom: 10px;
+}
+
+#footer {
+  text-align: center;
+  padding-top: 20px;
+  padding-bottom: 20px;
 }
