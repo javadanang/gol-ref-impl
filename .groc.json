@@ -1,4 +1,4 @@
 {
-  "glob": ["README.md", "public/*.js", "public/assets/js/gol-client.js", "lib/**/*.js", "test/**/*.js"],
+  "glob": ["README.md", "app.js", "cli.js", "public/*.js", "public/assets/js/gol-client.js", "lib/**/*.js", "test/**/*.js"],
   "github": false
 }
