@@ -96,6 +96,8 @@
     this.status_time_usage = document.getElementById('time_usage');
     this.status_memory_usage = document.getElementById('memory_usage');
 
+    self.pattern_list = document.getElementById('pattern-list');
+
     this.registerEvent(this.button_start, 'click', function() {
       self.socket.emit('start');
     });
@@ -112,17 +114,23 @@
       self.socket.emit('reset');
     });
 
+    self.registerEvent(self.pattern_list, 'change', function(event) {
+      self.socket.emit('request pattern', {name: self.pattern_list.value});
+    });
+    
     self.socket.on('change state', function(data) {
       if (data.state === 0) {
         self.button_start.disabled = false;
         self.button_stop.disabled = true;
         self.button_step.disabled = false;
         self.button_reset.disabled = false;
+        self.pattern_list.disabled = false;
       } else {
         self.button_start.disabled = true;
         self.button_stop.disabled = false;
         self.button_step.disabled = true;
         self.button_reset.disabled = true;
+        self.pattern_list.disabled = true;
       }
     });
 

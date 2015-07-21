@@ -61,6 +61,12 @@ io.on('connection', function (socket) {
   // (i.e. they cannot start/stop/step or change cells by click on it).
   if (serverIPs.indexOf(clientIp) >= 0) {
 
+    socket.on('request pattern', function(data) {
+      data = data || {};
+      console.log('Client request pattern() with params: ' + JSON.stringify(data));
+      gol.load(data.name);
+    });
+
     socket.on('request reverse', function(data) {
       data = data || {};
       console.log('Client request reverse() with params: ' + JSON.stringify(data));

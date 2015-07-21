@@ -107,7 +107,7 @@ describe('Test GOL constructor & methods', function() {
 
     var rows = gol.getRows();
     var cols = gol.getCols();
-    alive = 0;
+    var alive = 0;
     for(var i=0; i<rows; i++) {
       for(var j=0; j<cols; j++) {
         alive += gol.getCell(j, i);
@@ -132,6 +132,43 @@ describe('Test GOL constructor & methods', function() {
           assert(gol.getCell(j, i) == 0, 'cell[' + i + ',' + j + '] must be 0');
         }
       }
+    });
+  });
+
+  it('Test load(pattern_name) method', function() {
+
+    var gol = new GOL({ cols: 150, rows: 90, cells: [
+        {x:0, y:0, v:1},
+        {x:1, y:1, v:1},
+        {x:2, y:2, v:1},
+        {x:3, y:3, v:1},
+        {x:4, y:4, v:1},
+      ] 
+    });
+
+    gol.next();
+
+    ['Gosper-glider-gun'].forEach(function(name, index) {
+      gol.load(name);
+
+      assert(gol.getTotalSteps() == 0, 'Number of totalsteps is incorrect');
+
+      var rows = gol.getRows();
+      var cols = gol.getCols();
+      var alive = 0;
+      
+      var matrix = golPatterns[name].matrix[0];
+      var dim = golUtil.getMatrixDimension(matrix);
+
+      for(var i=0; i<dim.rows; i++) {
+        for(var j=0; j<dim.cols; j++) {
+          alive += matrix[i][j];
+          assert(matrix[i][j] == gol.getCell(j, i), 
+              'cell[' + i + ',' + j + '] is incorrect');
+        }
+      }
+
+      assert(gol.getAliveCells() == alive, 'Number of alivecells is incorrect');
     });
   });
 });
