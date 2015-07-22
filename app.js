@@ -85,6 +85,12 @@ io.on('connection', function (socket) {
       gol.reverse(data.cells);
     });
 
+    socket.on('request toroidal', function(data) {
+      data = data || {};
+      console.log('Client request toroidal() with params: ' + JSON.stringify(data));
+      gol.setToroidal(data.value);
+    });
+
     socket.on('start', function() {
       console.log('User click on start button.');
       if (golState === 0) {

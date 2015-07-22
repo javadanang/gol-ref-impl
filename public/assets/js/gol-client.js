@@ -88,6 +88,7 @@
     this.button_step = document.getElementById('step');
     this.button_reset = document.getElementById('reset');
     this.button_random = document.getElementById('random');
+    this.checkbox_toroidal = document.getElementById('checkbox_toroidal');
 
     this.status_totalsteps = document.getElementById('totalsteps');
     this.status_alivecells = document.getElementById('alivecells');
@@ -116,6 +117,10 @@
       self.socket.emit('random');
     });
 
+    self.registerEvent(self.checkbox_toroidal, 'change', function() {
+      self.socket.emit('request toroidal', {value: self.checkbox_toroidal.checked});
+    });
+
     self.registerEvent(self.pattern_list, 'change', function() {
       self.socket.emit('request pattern', {name: self.pattern_list.value});
     });
@@ -127,6 +132,7 @@
         self.button_step.disabled = false;
         self.button_reset.disabled = false;
         self.button_random.disabled = false;
+        self.checkbox_toroidal.disabled = false;
         self.pattern_list.disabled = false;
       } else {
         self.button_start.disabled = true;
@@ -134,6 +140,7 @@
         self.button_step.disabled = true;
         self.button_reset.disabled = true;
         self.button_random.disabled = true;
+        self.checkbox_toroidal.disabled = true;
         self.pattern_list.disabled = true;
       }
     });
