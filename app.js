@@ -1,4 +1,13 @@
 var SERVER_PORT = 7700;
+
+var SPACE_DIMS = {
+  large: {cols: 180, rows: 108},
+  medium: {cols: 150, rows: 90},
+  small: {cols: 100, rows: 60}
+};
+
+var CURRENT_SPACE_DIM = 'large';
+
 var golPatterns = require('./lib/gol-patterns.js');
 var golUtil = require('./lib/gol-util.js');
 var path = require('path');
@@ -16,7 +25,9 @@ var server = app.listen(SERVER_PORT, function () {
 var io = require('socket.io')(server);
 
 var GOL = require('./lib/gol-engine.js');
-var gol = new GOL({ cols: 150, rows: 90, 
+var gol = new GOL({ 
+  cols: SPACE_DIMS[CURRENT_SPACE_DIM].cols, 
+  rows: SPACE_DIMS[CURRENT_SPACE_DIM].rows, 
   cells: golPatterns['Gosper-glider-gun'].cells
 });
 
@@ -36,7 +47,8 @@ var serverIPs = golUtil.getServerIps();
 io.on('connection', function (socket) {
 
   socket.on('request dimension', function(data) {
-    console.log('GolClient request dimension of space.');
+    console.log('GolClient request dimension of space with params:' +
+      JSON.stringify(data));
     socket.emit('response dimension', {
       cols: gol.getCols(),
       rows: gol.getRows()
