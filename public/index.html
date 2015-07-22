@@ -21,8 +21,24 @@
           <canvas id="canvas" width="901" height="541"></canvas>
         </div>
       </div>
-      
+
       <div id="control" class="row">
+        <div class="col-md-8">
+          <div class="panel panel-info">
+            <div class="panel-body" id="patterns-body">
+              <label for"pattern-list">Use pattern:</label>&nbsp;
+              <select id="pattern-list">
+                <option value="Gosper-glider-gun" checked="checked">Gosper glider gun</option>
+                <option value="Acorn">Acorn</option>
+                <option value="Diehard">Diehard</option>
+              </select>
+              &nbsp;or&nbsp;
+              <button id='random' class="btn btn-primary">Random</button>
+              &nbsp;
+              <label for="checkbox_toroidal">Space is a toroidal matrix:&nbsp;<input id="checkbox_toroidal" type="checkbox" /></label>
+            </div>
+          </div>
+        </div>
         <div class="col-md-4">
           <div class="panel panel-info">
             <div class="panel-body">
@@ -33,29 +49,13 @@
             </div>
           </div>
         </div>
-        <div class="col-md-8">
-          <div class="panel panel-info">
-            <div class="panel-body">
-              <h5>Steps: <span id="totalsteps" class="label label-default">0</span> &nbsp; Alive cells: <span id="alivecells" class="label label-default">0</span> &nbsp; Elapsed time: <span id="time_usage" class="label label-default">0</span>ms &nbsp; Memory usage: <span id="memory_usage" class="label label-default">0</span>Kb</h5>
-            </div>
-          </div>
-        </div>
       </div>
 
       <div id="patterns" class="row">
         <div class="col-md-12">
           <div class="panel panel-info">
-            <div class="panel-body" id="patterns-body">
-              <label for"pattern-list">Apply a pattern:</label>&nbsp;
-              <select id="pattern-list">
-                <option value="Gosper-glider-gun" checked="checked">Gosper glider gun</option>
-                <option value="Acorn">Acorn</option>
-                <option value="Diehard">Diehard</option>
-              </select>
-              &nbsp;or&nbsp;
-              <button id='random' class="btn btn-primary">Random</button>
-              &nbsp;
-              <label for="checkbox_toroidal">Toroidal matrix:&nbsp;<input id="checkbox_toroidal" type="checkbox" /></label>
+            <div class="panel-body">
+              <h5>Columns: <span id="world_cols" class="label label-default">0</span> &nbsp; Rows: <span id="world_rows" class="label label-default">0</span> &nbsp; Steps: <span id="totalsteps" class="label label-default">0</span> &nbsp; Alive cells: <span id="alivecells" class="label label-default">0</span> &nbsp; Time/step: <span id="time_usage" class="label label-default">0</span>ms &nbsp; Memory usage: <span id="memory_usage" class="label label-default">0</span>Kb</h5>
             </div>
           </div>
         </div>

@@ -72,6 +72,9 @@
       self.cols = data.cols;
       self.rows = data.rows;
 
+      self.world_cols.innerHTML =data.cols;
+      self.world_rows.innerHTML =data.rows;
+
       self.cell_border = 1;
       self.cell_size = 0 - self.cell_border + Math.min(
         Math.floor((self.width - self.cell_border) / self.cols),
@@ -81,8 +84,6 @@
       self.socket.emit('request init');
     });
 
-    this.socket.emit('request dimension');
-
     this.button_start = document.getElementById('start');
     this.button_stop = document.getElementById('stop');
     this.button_step = document.getElementById('step');
@@ -90,6 +91,8 @@
     this.button_random = document.getElementById('random');
     this.checkbox_toroidal = document.getElementById('checkbox_toroidal');
 
+    this.world_cols = document.getElementById('world_cols');
+    this.world_rows = document.getElementById('world_rows');
     this.status_totalsteps = document.getElementById('totalsteps');
     this.status_alivecells = document.getElementById('alivecells');
     this.status_time_usage = document.getElementById('time_usage');
@@ -144,6 +147,8 @@
         self.pattern_list.disabled = true;
       }
     });
+
+    this.socket.emit('request dimension');
   }
 
   GolClient.prototype.drawSpace = function() {
