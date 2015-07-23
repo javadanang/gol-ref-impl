@@ -5,7 +5,7 @@
       (location.port && ":" + location.port);
   }
 
-  var GolClient = function() {
+  var GolClient = exports.GolClient = function() {
     this.socket = io.connect(getBaseURL());
   };
 
@@ -201,8 +201,6 @@
   GolClient.prototype.registerEvent = function (ele, event, handler, capture) {
     ele.addEventListener(event, handler, (capture == true) ? true : false);
   }
-
-  exports.GolClient = GolClient;
 
 })(this);
 
