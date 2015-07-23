@@ -17,6 +17,7 @@
     self.selected_cells = [];
     self.collection_mode = false;
 
+    self.clear_space = false;
     self.canvas = document.getElementById('canvas');
     self.context = self.canvas.getContext('2d');
 
@@ -74,10 +75,12 @@
     });
 
     self.registerEvent(self.button_reset, 'click', function() {
+      self.clear_space = true;
       self.socket.emit('reset');
     });
 
     self.registerEvent(self.button_random, 'click', function() {
+      self.clear_space = true;
       self.socket.emit('random');
     });
 
@@ -86,6 +89,7 @@
     });
 
     self.registerEvent(self.pattern_list, 'change', function() {
+      self.clear_space = true;
       self.socket.emit('request pattern', {name: self.pattern_list.value});
     });
     
@@ -112,9 +116,17 @@
     self.socket.on('change space', function(data) {
       var cells = data.cells || [];
       
-      for(var k=0; k<cells.length; k++) {
-        self.drawCell(cells[k].x, cells[k].y, cells[k].v == 1);
+      if (self.clear_space && (cells.length > 0)) {
+        self.drawSpace();
       }
+
+      for(var k=0; k<cells.length; k++) {
+        if (!self.clear_space || (cells[k].v > 0)) {
+          self.drawCell(cells[k].x, cells[k].y, cells[k].v);  
+        }
+      }
+
+      self.clear_space = false;
 
       self.status_totalsteps.innerHTML = (data.totalsteps) ? data.totalsteps : '-';
       self.status_alivecells.innerHTML = (data.alivecells) ? data.alivecells : '-';
@@ -137,13 +149,14 @@
 
     for (var i = 0 ; i < this.cols; i++) {
       for (var j = 0 ; j < this.rows; j++) {
-        this.drawCell(i, j, false);
+        this.drawCell(i, j, -1);
       }
     }
   }
 
   GolClient.prototype.drawCell = function(i, j, alive) {
-    this.context.fillStyle = (alive) ? 'green' : 'white';
+    this.context.fillStyle = (alive == 0) ? 'darkgray' : 
+        ((alive==1) ? 'green' : 'white');
     this.context.fillRect(
       this.cell_border + (this.cell_border + this.cell_size) * i, 
       this.cell_border + (this.cell_border + this.cell_size) * j, 
