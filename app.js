@@ -1,4 +1,4 @@
-var SERVER_PORT = 7700;
+var SERVER_PORT = 8080;
 
 var path = require('path');
 var express = require('express');
