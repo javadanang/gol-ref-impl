@@ -3,7 +3,7 @@ var assert = require('chai').assert;
 var rewire = require('rewire');
 var http = require('http');
 var ioclient = require('socket.io-client');
-var ioserver = rewire('../lib/gol-ioserver.js');
+var ioserver = rewire('../../lib/gol-ioserver.js');
 
 var SERVER_PORT = 7700;
 var socketURL = 'http://0.0.0.0:' + SERVER_PORT;
@@ -20,7 +20,7 @@ describe("GOL Socket.io Server Tests", function () {
 
   beforeEach(function () {
     gol = ioserver.__get__("gol");
-    
+
     server = http.createServer().listen(SERVER_PORT, function() {
         console.log("Server listening on: http://0.0.0.0:%s", SERVER_PORT);
     });
@@ -28,7 +28,7 @@ describe("GOL Socket.io Server Tests", function () {
     var socket = ioserver.attach(server);
 
     // socket.on('connection', function(client) {
-    //   client.on('disconnect', function() { 
+    //   client.on('disconnect', function() {
     //     server.close();
     //   });
     // });
@@ -44,13 +44,13 @@ describe("GOL Socket.io Server Tests", function () {
 
   it('Test "request dimension/response dimension" event', function(done) {
     golStub = sinon.stub({
-      getCols: function() {}, 
+      getCols: function() {},
       getRows: function() {}
     });
     golStub.getCols.returns(120);
     golStub.getRows.returns(100);
     ioserver.__set__("gol", golStub);
-    
+
     var client = ioclient.connect(socketURL, options);
     client.on('response dimension', function(data) {
       assert(data.cols === 120, 'Cols should equal 180');
@@ -85,7 +85,7 @@ describe("GOL Socket.io Server Tests", function () {
         assert(data.cells[k].v === gol.getCell(data.cells[k].x, data.cells[k].y),
           'cell[' + data.cells[k].x + ',' + data.cells[k].y + '] is incorrect');
       }
-      assert(alive === gol.getAliveCells(), 
+      assert(alive === gol.getAliveCells(),
         'Number of alive cells is incorrect');
       client.disconnect();
       server.close();

@@ -1,7 +1,7 @@
 var assert = require('chai').assert;
-var GOL = require('../lib/gol-engine.js');
-var golUtil = require('../lib/gol-util.js');
-var golPatterns = require('../lib/gol-patterns.js');
+var GOL = require('../../lib/gol-engine.js');
+var golUtil = require('../../lib/gol-util.js');
+var golPatterns = require('../../lib/gol-patterns.js');
 
 describe('Test GOL constructor & methods', function() {
   it('Test Constructor, getCols() & getRows()', function() {
@@ -74,7 +74,7 @@ describe('Test GOL constructor & methods', function() {
     assert(gol.getTotalSteps() == 0, 'Begin round should be step 0');
     for(var i=1; i<=100; i++) {
       gol.next();
-      assert(gol.getTotalSteps() == i, 
+      assert(gol.getTotalSteps() == i,
         'TotalSteps at round#' + i + ' isnt correct');
     }
   });
@@ -120,11 +120,11 @@ describe('Test GOL constructor & methods', function() {
   it('Test reset() method', function() {
     ['Blinker', 'Toad', 'Beacon'].forEach(function(name, index) {
       var matrix = golPatterns[name].matrix;
-      
+
       var gol = new GOL({matrix: matrix[0]});
       var rows = gol.getRows();
       var cols = gol.getCols();
-      
+
       gol.reset();
       assert(gol.getAliveCells() == 0, 'Number of alive cells is incorrect');
       for(var i=0; i<rows; i++) {
@@ -143,7 +143,7 @@ describe('Test GOL constructor & methods', function() {
         {x:2, y:2, v:1},
         {x:3, y:3, v:1},
         {x:4, y:4, v:1},
-      ] 
+      ]
     });
 
     gol.next();
@@ -156,14 +156,14 @@ describe('Test GOL constructor & methods', function() {
       var rows = gol.getRows();
       var cols = gol.getCols();
       var alive = 0;
-      
+
       var matrix = golPatterns[name].matrix[0];
       var dim = golUtil.getMatrixDimension(matrix);
 
       for(var i=0; i<dim.rows; i++) {
         for(var j=0; j<dim.cols; j++) {
           alive += matrix[i][j];
-          assert(matrix[i][j] == gol.getCell(j, i), 
+          assert(matrix[i][j] == gol.getCell(j, i),
               'cell[' + i + ',' + j + '] is incorrect');
         }
       }
@@ -174,11 +174,11 @@ describe('Test GOL constructor & methods', function() {
 });
 
 describe('Test GOL passes through patterns', function() {
-  
+
   it('Test with Still-lifes patterns', function() {
     ['Block', 'Beehive', 'Loaf', 'Boat'].forEach(function(name, index) {
       var matrix = golPatterns[name].matrix;
-      
+
       var gol = new GOL({matrix: matrix[0]});
       var rows = gol.getRows();
       var cols = gol.getCols();
@@ -192,35 +192,35 @@ describe('Test GOL passes through patterns', function() {
 
       for(var i=0; i<rows; i++) {
         for(var j=0; j<cols; j++) {
-          assert(matrix[0][i][j] == gol.getCell(j, i), 
+          assert(matrix[0][i][j] == gol.getCell(j, i),
             'cell[' + i + ',' + j + '] is incorrect');
         }
-      }  
+      }
     })
   });
 
   it('Test with Oscillators patterns', function() {
     ['Blinker', 'Toad', 'Beacon'].forEach(function(name, index) {
       var matrix = golPatterns[name].matrix;
-      
+
       var gol = new GOL({matrix: matrix[0]});
       var rows = gol.getRows();
       var cols = gol.getCols();
-      
+
       for(var k=1; k<golPatterns[name].period; k++) {
         gol.next();
         for(var i=0; i<rows; i++) {
           for(var j=0; j<cols; j++) {
-            assert(matrix[k][i][j] == gol.getCell(j, i), 
+            assert(matrix[k][i][j] == gol.getCell(j, i),
               'cell[' + i + ',' + j + '] is wrong');
           }
-        }  
+        }
       }
 
       gol.next();
       for(var i=0; i<rows; i++) {
         for(var j=0; j<cols; j++) {
-          assert(matrix[0][i][j] == gol.getCell(j, i), 
+          assert(matrix[0][i][j] == gol.getCell(j, i),
             'cell[' + i + ',' + j + '] is wrong');
         }
       }

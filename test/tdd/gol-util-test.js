@@ -1,5 +1,5 @@
 var assert = require('chai').assert;
-var golUtil = require('../lib/gol-util.js');
+var golUtil = require('../../lib/gol-util.js');
 
 describe('Test function getMatrixDimension()', function() {
   it('Test valid parameters', function() {
@@ -25,8 +25,8 @@ describe('Test function getMatrixDimension()', function() {
     ];
     matrices.forEach(function(matrix, index) {
       var dim = golUtil.getMatrixDimension(matrix);
-      assert(dim.cols === matrix[0].length && dim.rows === matrix.length, 
-        'getMatrixDimension() apply for ' + 
+      assert(dim.cols === matrix[0].length && dim.rows === matrix.length,
+        'getMatrixDimension() apply for ' +
         JSON.stringify(matrix) + ' is not correct');
     });
   });
