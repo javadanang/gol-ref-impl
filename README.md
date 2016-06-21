@@ -17,7 +17,11 @@ Install dependencies:
 
 Run unit testing:
 
-    $ ./node_modules/.bin/mocha test/*
+    $ ./node_modules/.bin/mocha test/tdd/*
+
+Run BDD:
+
+    $ ./node_modules/.bin/cucumberjs test/bdd/features/*.feature
 
 Run GOL by using command-line:
 
